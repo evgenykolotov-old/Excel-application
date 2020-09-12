@@ -6,6 +6,7 @@
   position: relative;
   display: inline-block;
   color: rgba(0, 0, 0, .7);
+  user-select: none; 
 
   & i {
     font-size: 18px;
