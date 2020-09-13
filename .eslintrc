@@ -10,6 +10,7 @@
     "semi": "off",
     "comma-dangle": "off",
     "object-curly-spacing": "off",
-    "arrow-parens": "off"
+    "arrow-parens": "off",
+    "require-jsdoc": "off"
   }
 }
