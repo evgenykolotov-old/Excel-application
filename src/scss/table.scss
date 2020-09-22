@@ -23,6 +23,7 @@
     border: 1px solid $border-color;
     background: #f8f9fa;
     border-top: none;
+    user-select: none;
   }
 
   .row-data {
@@ -41,6 +42,7 @@
     border-top: 0;
     border-left: 0;
     height: 100%;
+    user-select: none;
   }
 
   .cell {
@@ -54,12 +56,14 @@
     color: #111;
     white-space: nowrap;
     outline: none;
+    cursor: pointer;
 
 
     &.selected {
       border: none;
       outline: 2px solid $primary-color;
       z-index: 2;
+      cursor: text;
     }
   }
 
