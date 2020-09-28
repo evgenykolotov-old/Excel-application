@@ -23,6 +23,14 @@ class TableSelection {
     this.group = $group;
     this.group.forEach($elem => $elem.addClass(TableSelection.className));
   }
+
+  applyStyle(style) {
+    this.group.forEach($elem => $elem.css(style));
+  }
+
+  get selectedIds() {
+    return this.group.map($elem => $elem.id());
+  }
 }
 
 export default TableSelection;
