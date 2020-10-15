@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Kolotov1995/Excel-application.git"
+    "url": "git+https://github.com/EvgenyKolotov/Excel-application.git"
   },
   "author": "Evgeny Kolotov <e.Kolotov95@gmail.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Kolotov1995/Excel-application/issues"
+    "url": "https://github.com/EvgenyKolotov/Excel-application/issues"
   },
-  "homepage": "https://github.com/Kolotov1995/Excel-application#readme",
+  "homepage": "https://github.com/EvgenyKolotov/Excel-application#readme",
   "browserslist": "> 0.25%, not dead",
   "devDependencies": {
     "@babel/core": "^7.11.6",
