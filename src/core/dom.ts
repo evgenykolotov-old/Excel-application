@@ -1,13 +1,15 @@
-class Dom {
-  constructor(selector) {
+export class Dom {
+  private $elem: HTMLElement;
+
+  constructor(selector: string | HTMLElement) {
     if (typeof(selector) === 'string') {
-      this.$elem = document.querySelector(selector);
+      this.$elem = <HTMLElement>document.querySelector(selector);
     } else {
       this.$elem = selector;
     }
   }
 
-  html(html) {
+  public html(html: string): Dom | string {
     if (typeof(html) === 'string') {
       this.$elem.innerHTML = html;
       return this;
@@ -15,79 +17,75 @@ class Dom {
     return this.$elem.outerHTML.trim();
   }
 
-  text(text) {
+  public text(text: string): Dom | string {
     if (typeof(text) !== 'undefined') {
       this.$elem.textContent = text;
       return this;
     }
     if (this.$elem.tagName.toLowerCase() === 'input') {
-      return this.$elem.value.trim();
+      return (<HTMLInputElement>this.$elem).value.trim();
     }
-    return this.$elem.textContent.trim();
+    return (<string>this.$elem.textContent).trim();
   }
 
-  clear() {
+  public clear(): Dom {
     this.html('');
     return this;
   }
 
-  on(eventType, callback) {
+  public on(eventType: string, callback: EventListenerOrEventListenerObject): void {
     this.$elem.addEventListener(eventType, callback);
   }
 
-  off(eventType, callback) {
+  public off(eventType: string, callback: EventListenerOrEventListenerObject): void {
     this.$elem.removeEventListener(eventType, callback);
   }
 
-  append(node) {
+  public append(node: HTMLElement): Dom {
     if (node instanceof Dom) {
       node = node.$elem;
     }
-    if (Element.prototype.append) {
-      this.$elem.append(node);
-    } else {
-      this.$elem.appendChild(node);
-    }
+    this.$elem.appendChild(node);
     return this;
   }
 
-  closest(selector) {
-    return $(this.$elem.closest(selector));
+  public closest(selector: string): Dom {
+    return $(<HTMLElement>this.$elem.closest(selector));
   }
 
-  get data() {
+  public get data(): DOMStringMap {
     return this.$elem.dataset;
   }
 
-  getCoords() {
+  public getCoords(): DOMRect {
     return this.$elem.getBoundingClientRect();
   }
 
-  find(selector) {
-    return $(this.$elem.querySelector(selector));
+  public find(selector: string): Dom {
+    return $(<HTMLElement>this.$elem.querySelector(selector));
   }
 
-  findAll(selector) {
+  public findAll(selector: string): NodeListOf<Element> {
     return this.$elem.querySelectorAll(selector);
   }
 
-  css(styles = {}) {
+  public css(styles = {}): void {
     Object.entries(styles).forEach(([key, value]) => {
       this.$elem.style[key] = value;
     })
   }
 
-  addClass(className) {
+  public addClass(className: string): Dom {
     this.$elem.classList.add(className);
     return this;
   }
 
-  removeClass(className) {
+  public removeClass(className: string): Dom {
     this.$elem.classList.remove(className);
     return this;
   }
 
-  id(parse) {
+  public id(parse?: boolean): any {
     if (parse) {
       const parsed = this.id().split(':');
       return {
@@ -98,12 +96,12 @@ class Dom {
     return this.data.id;
   }
 
-  focus() {
+  public focus(): Dom {
     this.$elem.focus();
     return this;
   }
 
-  getStyles(styles = []) {
+  public getStyles(styles = []): any {
     return styles.reduce((acc, item) => {
       acc[item] = this.$elem.style[item];
       return acc;
@@ -111,11 +109,11 @@ class Dom {
   }
 }
 
-export function $(selector) {
+export function $(selector: HTMLElement | string): Dom {
   return new Dom(selector);
 }
 
-$.create = (tagName, classes = '') => {
+$.create = (tagName: string, classes = '') => {
   const el = document.createElement(tagName);
   if (classes) {
     el.classList.add(classes);

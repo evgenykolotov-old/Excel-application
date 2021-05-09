@@ -1,7 +1,8 @@
-import { clone } from '@core/utils';
+import { clone } from '../core/utils';
+import { State } from '../shared/State';
 import { defaultStyles, defaultTitle } from '../constants';
 
-const defaultState = {
+const defaultState: State = {
   title: defaultTitle,
   colState: {},
   rowState: {},
@@ -12,10 +13,10 @@ const defaultState = {
   openedDate: new Date().toJSON(),
 }
 
-const normalize = state => ({
+const normalize = (state: State) => ({
   ...state, currentStyles: defaultStyles, currentText: ''
 })
 
-export function normalizeInitialState(state) {
+export function normalizeInitialState(state: State): State {
   return state ? normalize(state) : clone(defaultState);
 }

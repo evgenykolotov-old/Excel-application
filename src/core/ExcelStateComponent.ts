@@ -1,19 +1,18 @@
-import ExcelComponent from '@core/ExcelComponent';
+import ExcelComponent from './ExcelComponent';
+import { State } from '../shared/State';
 
-class ExcelStateComponent extends ExcelComponent {
-  constructor(...args) {
-    super(...args);
-  }
+abstract class ExcelStateComponent extends ExcelComponent {
+  protected state: State;
 
-  get template() {
+  protected get template(): string {
     return JSON.stringify(this.state, null, 2);
   }
 
-  initState(initialState = {}) {
+  protected initState(initialState: State): void {
     this.state = { ...initialState };
   }
 
-  setState(newState) {
+  protected setState(newState: State): void {
     this.state = { ...this.state, ...newState };
     this.$root.html(this.template);
   }

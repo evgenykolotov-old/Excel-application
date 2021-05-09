@@ -1,9 +1,9 @@
-class Emitter {
-  constructor() {
-    this.listeners = {};
-  }
+import { EventEmitter, EventListener } from '../shared/Emitter';
 
-  emit(event, ...args) {
+class Emitter implements EventEmitter {
+  private listeners: EventListener = {};
+
+  public emit(event: string, ...args: unknown[]): boolean {
     if (!Array.isArray(this.listeners[event])) {
       return false;
     }
@@ -13,11 +13,11 @@ class Emitter {
     return true;
   }
 
-  subscribe(event, fn) {
+  public subscribe(event: string, fn: () => unknown): () => void {
     this.listeners[event] = this.listeners[event] || [];
     this.listeners[event].push(fn);
     return () => {
-      this.listeners[event] = this.listeners[event].filter(listener => listener !== fn);
+      this.listeners[event] = this.listeners[event].filter((listener: unknown) => listener !== fn);
     }
   }
 }

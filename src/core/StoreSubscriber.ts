@@ -1,18 +1,24 @@
-import { isEqual } from '@core/utils';
+import { Subscriber } from '../shared/StoreSubscriber';
+import { Store } from '../shared/Store';
+import { State } from '../shared/State';
 
-class StoreSubscriber {
-  constructor(store) {
+class StoreSubscriber implements Subscriber {
+  public store: Store;
+  public sub: any;
+  public prevState: State;
+
+  constructor(store: Store) {
     this.store = store;
     this.sub = null;
-    this.prevState = {};
+    this.prevState = this.store.getState();
   }
 
-  subscribeComponents(components) {
+  public subscribeComponents(components: unknown[]): void {
     this.prevState = this.store.getState();
-    this.sub = this.store.subscribe(state => {
+    this.sub = this.store.subscribe((state: State) => {
       Object.keys(state).forEach(key => {
-        if (!isEqual(this.prevState[key], state[key])) {
-          components.forEach(component => {
+        if (!this.isEqual(this.prevState[key], state[key])) {
+          components.forEach((component: any) => {
             if (component.isWatching(key)) {
               const changes = { [key]: state[key] };
               component.storeChanged(changes);
@@ -24,8 +30,15 @@ class StoreSubscriber {
     })
   }
 
-  unsubscribeFromStore() {
+  public unsubscribeFromStore(): void {
     this.sub.unsubscribe();
+  }
+
+  private isEqual(a: unknown, b: unknown): boolean {
+    if (typeof(a) === 'object' && typeof(b) === 'object') {
+      return JSON.stringify(a) === JSON.stringify(b);
+    }
+    return a === b;
   }
 }
 

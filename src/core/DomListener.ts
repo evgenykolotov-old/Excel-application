@@ -1,7 +1,8 @@
-import { capitalize } from '@core/utils';
+abstract class DomListener {
+  public $root: unknown;
+  public listeners: string[] = [];
 
-class DomListener {
-  constructor($root, listeners = []) {
+  constructor($root: unknown, listeners: string[]) {
     if (!$root) {
       throw new Error('No $root provided for DomListener!');
     }
@@ -9,9 +10,9 @@ class DomListener {
     this.listeners = listeners;
   }
 
-  initDOMListeners() {
+  protected initDOMListeners(): void {
     this.listeners.forEach(listener => {
-      const method = getMethodName(listener);
+      const method = this.getMethodName(listener);
       if (!this[method]) {
         throw new Error(`Method ${method} is not implemented in ${this.name}`);
       }
@@ -20,16 +21,19 @@ class DomListener {
     })
   }
 
-  removeDOMListeners() {
+  protected removeDOMListeners(): void {
     this.listeners.forEach(listener => {
-      const method = getMethodName(listener);
+      const method = this.getMethodName(listener);
       this.$root.off(listener, this[method]);
     })
   }
-}
 
-function getMethodName(eventName) {
-  return 'on' + capitalize(eventName);
+  private getMethodName(eventName: string): string {
+    if (typeof(eventName) !== 'string') {
+      return '';
+    }
+    return 'on' + eventName.charAt(0).toUpperCase() + eventName.slice(1);
+  }
 }
 
 export default DomListener;

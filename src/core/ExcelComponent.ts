@@ -1,47 +1,56 @@
-import DomListener from '@core/DomListener';
+import DomListener from './DomListener';
+import { EventEmitter } from '../shared/Emitter';
+import { Store } from '../shared/Store';
+import { ActionData } from '../store/actions';
 
-class ExcelComponent extends DomListener {
-  constructor($root, options = {}) {
+abstract class ExcelComponent extends DomListener {
+  public name: string;
+  public emitter: EventEmitter;
+  public subscribe: unknown = [];
+  public store: Store;
+  public unsubscribers: unknown[] = [];
+
+  constructor($root: unknown, options: any) {
     super($root, options.listeners);
     this.name = options.name || '';
     this.emitter = options.emitter;
-    this.subscribe = options.subscribe || [];
+    this.subscribe = options.subscribe;
     this.store = options.store;
-    this.unsubscribers = [];
+    this.unsubscribers;
 
     this.prepare();
   }
 
-  prepare() {}
+  protected abstract prepare(): void;
 
-  $emit(event, ...args) {
+  protected $emit(event: string, ...args: unknown[]): void {
     this.emitter.emit(event, ...args);
   }
 
-  $on(event, fn) {
+  protected $on(event: string, fn: () => unknown): void {
     const unsub = this.emitter.subscribe(event, fn);
     this.unsubscribers.push(unsub);
   }
 
-  $dispatch(action) {
+  protected $dispatch(action: ActionData): void {
     this.store.dispatch(action);
   }
 
-  isWatching(key) {
+  protected isWatching(key: unknown): unknown {
     return this.subscribe.includes(key);
   }
 
-  storeChanged() {}
+  protected abstract storeChanged(): void;
 
-  toHTML() {
+  public toHTML(): string {
     return '';
   }
 
-  init() {
+  public init(): void {
     this.initDOMListeners();
   }
 
-  destroy() {
+  public destroy(): void {
     this.removeDOMListeners();
     this.unsubscribers.forEach(unsub => unsub());
   }

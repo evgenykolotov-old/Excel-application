@@ -1,42 +1,37 @@
-import { CHANGE_TEXT, CHANGE_STYLES, TABLE_RESIZE, APPLY_STYLE, CHANGE_TITLE, UPDATE_DATE } from './types';
+import * as actions from './types';
 
-export function tableResize(data) {
-  return {
-    type: TABLE_RESIZE,
-    data
-  }
+type Action = (data?: any) => ActionData;
+
+export interface ActionData {
+  type: string;
+  data?: any;
 }
 
-export function changeText(data) {
-  return {
-    type: CHANGE_TEXT,
-    data,
-  }
-}
+export const tableResize: Action = (data) => ({
+  type: actions.TABLE_RESIZE,
+  data
+});
 
-export function changeStyles(data) {
-  return {
-    type: CHANGE_STYLES,
-    data,
-  }
-}
+export const changeText: Action = (data) => ({
+  type: actions.CHANGE_TEXT,
+  data
+});
 
-export function applyStyles(data) {
-  return {
-    type: APPLY_STYLE,
-    data,
-  }
-}
+export const changeStyles: Action = (data) => ({
+  type: actions.CHANGE_STYLES,
+  data,
+});
 
-export function changeTitle(data) {
-  return {
-    type: CHANGE_TITLE,
-    data,
-  }
-}
+export const applyStyles: Action = (data) => ({
+  type: actions.APPLY_STYLE,
+  data
+});
 
-export function updateDate() {
-  return {
-    type: UPDATE_DATE
-  }
-}
+export const changeTitle: Action = (data) => ({
+  type: actions.CHANGE_TITLE,
+  data
+});
+
+export const updateDate: Action = () => ({
+  type: actions.UPDATE_DATE
+});
