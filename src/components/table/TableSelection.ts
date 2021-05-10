@@ -1,34 +1,39 @@
-class TableSelection {
+import { Dom } from "../../core/dom";
+import { Selection } from '../../shared/TableSelection';
+
+class TableSelection implements Selection {
   static className = 'selected';
+  private group: Dom[];
+  public current: Dom | null;
 
   constructor() {
     this.group = [];
     this.current = null;
   }
 
-  clear() {
+  public clear(): void {
     this.group.forEach($cell => $cell.removeClass(TableSelection.className));
     this.group = [];
   }
 
-  select($elem) {
+  public select($elem: Dom): void {
     this.clear();
     $elem.focus().addClass(TableSelection.className);
     this.group.push($elem);
     this.current = $elem;
   }
 
-  selectGroup($group = []) {
+  public selectGroup($group: Dom[] = []): void {
     this.clear();
     this.group = $group;
     this.group.forEach($elem => $elem.addClass(TableSelection.className));
   }
 
-  applyStyle(style) {
+  public applyStyle(style: any): void {
     this.group.forEach($elem => $elem.css(style));
   }
 
-  get selectedIds() {
+  public get selectedIds(): any {
     return this.group.map($elem => $elem.id());
   }
 }

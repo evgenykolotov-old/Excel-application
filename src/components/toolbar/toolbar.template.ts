@@ -1,4 +1,4 @@
-function toButton(button) {
+function toButton(button: any) {
   const meta = `data-type="button" data-value='${JSON.stringify(button.value)}'`;
   return `
     <div 
@@ -10,7 +10,7 @@ function toButton(button) {
   `;
 }
 
-export function createToolbar(state) {
+export function createToolbar(state: any): string {
   const buttons = [
     {
       icon: 'format_align_left',

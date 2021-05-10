@@ -17,7 +17,7 @@ export class Dom {
     return this.$elem.outerHTML.trim();
   }
 
-  public text(text: string): Dom | string {
+  public text(text?: string): Dom | string {
     if (typeof(text) !== 'undefined') {
       this.$elem.textContent = text;
       return this;
@@ -41,7 +41,7 @@ export class Dom {
     this.$elem.removeEventListener(eventType, callback);
   }
 
-  public append(node: HTMLElement): Dom {
+  public append(node: HTMLElement | Dom): Dom {
     if (node instanceof Dom) {
       node = node.$elem;
     }

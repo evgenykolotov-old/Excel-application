@@ -1,6 +1,6 @@
-import { $ } from '@core/dom';
+import { $, Dom } from '../../core/dom';
 
-export function resizeHandler($root, event) {
+export function resizeHandler($root: Dom, event: any): Promise<any> {
   return new Promise(resolve => {
     const $resizer = $(event.target);
     const $parent = $resizer.closest('[data-type="resizable"]');
@@ -8,7 +8,7 @@ export function resizeHandler($root, event) {
     const type = $resizer.data.resize;
     const sideProp = type === 'col' ? 'bottom' : 'right';
     $resizer.css({ opacity: 1, [sideProp]: '-5000px' });
-    let value;
+    let value: number;
     document.onmousemove = event => {
       if (type === 'col') {
         const delta = event.pageX - coords.right;
@@ -26,16 +26,18 @@ export function resizeHandler($root, event) {
       if (type === 'col') {
         $parent.css({ width: value + 'px' });
         $root.findAll(`[data-col="${$parent.data.col}"]`)
-            .forEach(elem => elem.style.width = value + 'px');
+            .forEach(elem => (<HTMLElement>elem).style.width = value + 'px');
       } else {
         $parent.css({ height: value + 'px' });
       }
-      resolve({
-        id: $parent.data[type],
-        type,
-        value
-      })
-      $resizer.css({ opacity: 0, bottom: 0, right: 0 });
+      if (type !== undefined) {
+        resolve({
+          id: $parent.data[type],
+          type,
+          value
+        })
+        $resizer.css({ opacity: 0, bottom: 0, right: 0 });
+      }
     }
   });
 }

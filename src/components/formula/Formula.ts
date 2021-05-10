@@ -1,43 +1,50 @@
-import ExcelComponent from '@core/ExcelComponent';
-import { $ } from '../../core/dom';
+import ExcelComponent from '../../core/ExcelComponent';
+import { $, Dom } from '../../core/dom';
 
 class Formula extends ExcelComponent {
   static className = 'excel__formula';
+  private $formula: Dom | null = null;
+  public $root: Dom;
 
-  constructor($root, options) {
+  constructor($root: Dom, options: any) {
     super($root, {
       name: 'Formula',
       listeners: ['input', 'keydown'],
       subscribe: ['currentText'],
       ...options
     });
+    this.$root = $root;
   }
 
-  init() {
+  protected prepare(): void {
+    console.log('Prepare Formula');
+  }
+
+  public init(): void {
     super.init();
     this.$formula = this.$root.find('#formula');
 
-    this.$on('table:select', $cell => {
-      this.$formula.text($cell.text());
+    this.$on('table:select', ($cell: any) => {
+      this.$formula && this.$formula.text($cell.text());
     })
   }
 
-  toHTML() {
+  public toHTML(): string {
     return `
       <div class="info">fx</div>
       <div id="formula" class="input" contenteditable spellcheck="false"></div>
     `;
   }
 
-  storeChanged({ currentText }) {
-    this.$formula.text(currentText);
+  protected storeChanged({ currentText }: any): void {
+    this.$formula && this.$formula.text(currentText);
   }
 
-  onInput(event) {
+  protected onInput(event: any): void {
     this.$emit('formula:input', $(event.target).text());
   }
 
-  onKeydown(event) {
+  protected onKeydown(event: any): void {
     const keys = ['Enter', 'Tab'];
     if (keys.includes(event.key)) {
       event.preventDefault();

@@ -1,15 +1,17 @@
-class Page {
-  constructor(params) {
+abstract class Page {
+  public params: any;
+
+  constructor(params: any) {
     this.params = params;
   }
 
-  getRoot() {
+  public getRoot(): void {
     throw new Error('Method getRoot should be implemented');
   }
 
-  afterRender() {}
+  public abstract afterRender(): void;
 
-  destroy() {}
+  public abstract destroy(): void;
 }
 
 export default Page;

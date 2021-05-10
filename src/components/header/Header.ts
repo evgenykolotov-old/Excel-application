@@ -1,13 +1,13 @@
-import ExcelComponent from '@core/ExcelComponent';
-import ActiveRoute from '@core/routes/ActiveRoute';
+import ExcelComponent from '../../core/ExcelComponent';
+import ActiveRoute from '../../core/routes/ActiveRoute';
 import { changeTitle } from '../../store/actions';
 import { defaultTitle } from '../../constants';
-import { $ } from '@core/dom';
+import { $, Dom } from '../../core/dom';
 
 class Header extends ExcelComponent {
   static className = 'excel__header';
 
-  constructor($root, options) {
+  constructor($root: Dom, options: any) {
     super($root, {
       name: 'Header',
       listeners: ['input', 'click'],
@@ -16,7 +16,15 @@ class Header extends ExcelComponent {
     });
   }
 
-  toHTML() {
+  protected prepare(): void {
+    console.log('Prepare Header');
+  }
+
+  protected storeChanged(): void {
+    console.log('StoreChanged Header');
+  }
+
+  public toHTML(): string {
     const title = this.store.getState().title || defaultTitle;
     return `
       <input type="text" class="input" value="${title}" />
@@ -31,12 +39,12 @@ class Header extends ExcelComponent {
     `;
   }
 
-  onInput(event) {
+  protected onInput(event: any): void {
     const $target = $(event.target);
     this.$dispatch(changeTitle($target.text()));
   }
 
-  onClick(event) {
+  protected onClick(event: any): void {
     const $target = $(event.target);
     if ($target.data.button === 'remove') {
       const decision = window.confirm('Вы действительно хотите удалить эту таблицу?');

@@ -1,14 +1,14 @@
-import { range } from '@core/utils';
+import { range } from '../../core/utils';
 
-export function shouldResize(event) {
+export function shouldResize(event: any): any {
   return event.target.dataset.resize;
 }
 
-export function isCell(event) {
+export function isCell(event: any): any {
   return event.target.dataset.type === 'cell';
 }
 
-export function matrix($target, $current) {
+export function matrix($target: any, $current: any): Array<any> {
   const target = $target.id(true);
   const current = $current.id(true);
   const cols = range(current.col, target.col);
@@ -19,7 +19,7 @@ export function matrix($target, $current) {
   }, []);
 }
 
-export function nextSelector(key, { col, row }) {
+export function nextSelector(key: any, { col, row }: { col: any, row: any}): string {
   const MIN_VALUE = 0;
   switch (key) {
     case 'Enter':

@@ -1,8 +1,12 @@
-import { $ } from '@core/dom';
+import { $, Dom } from '../dom';
 import ActiveRoute from './ActiveRoute';
 
 class Router {
-  constructor(selector, routes) {
+  private $placeholder: Dom;
+  private routes: any;
+  private page: any;
+
+  constructor(selector: HTMLElement, routes: any) {
     if (!selector) {
       throw new Error('Selector is not provided in Router!');
     }
@@ -13,16 +17,16 @@ class Router {
     this.init();
   }
 
-  init() {
+  public init(): void {
     window.addEventListener('hashchange', this.changePageHandler);
     this.changePageHandler();
   }
 
-  destroy() {
+  public destroy(): void {
     window.removeEventListener('hashchange', this.changePageHandler);
   }
 
-  changePageHandler() {
+  public changePageHandler(): void {
     if (this.page) {
       this.page.destroy();
     }

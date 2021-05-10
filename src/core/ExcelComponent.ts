@@ -27,7 +27,7 @@ abstract class ExcelComponent extends DomListener {
     this.emitter.emit(event, ...args);
   }
 
-  protected $on(event: string, fn: () => unknown): void {
+  protected $on(event: string, fn: (...args: unknown[]) => unknown): void {
     const unsub = this.emitter.subscribe(event, fn);
     this.unsubscribers.push(unsub);
   }
@@ -40,7 +40,7 @@ abstract class ExcelComponent extends DomListener {
     return this.subscribe.includes(key);
   }
 
-  protected abstract storeChanged(): void;
+  protected abstract storeChanged(changes?: any): void;
 
   public toHTML(): string {
     return '';
