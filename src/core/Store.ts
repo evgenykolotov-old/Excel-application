@@ -1,9 +1,8 @@
-import { Store } from '../shared/Store';
 import { State } from '../shared/State';
 import { RootReducer } from '../store/rootReducer';
 import { ActionData } from '../store/actions';
 
-class StoreCreator implements Store {
+class StoreCreator {
   private state: State;
   private listeners: Array<(...args: unknown[]) => unknown>;
 

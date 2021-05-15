@@ -1,8 +1,10 @@
-abstract class DomListener {
-  public $root: unknown;
-  public listeners: string[] = [];
+import { Dom } from "./Dom";
 
-  constructor($root: unknown, listeners: string[]) {
+abstract class DomListener {
+  protected $root: Dom;
+  private listeners: string[] = [];
+
+  constructor($root: Dom, listeners: string[]) {
     if (!$root) {
       throw new Error('No $root provided for DomListener!');
     }

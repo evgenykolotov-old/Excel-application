@@ -1,12 +1,13 @@
 import ExcelComponent from '../../core/ExcelComponent';
-import { $, Dom } from '../../core/dom';
+import { $, Dom } from '../../core/Dom';
+import { ComponentOptions } from '../../shared/Component';
 
 class Formula extends ExcelComponent {
   static className = 'excel__formula';
   private $formula: Dom | null = null;
   public $root: Dom;
 
-  constructor($root: Dom, options: any) {
+  constructor($root: Dom, options: ComponentOptions) {
     super($root, {
       name: 'Formula',
       listeners: ['input', 'keydown'],

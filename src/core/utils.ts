@@ -6,16 +6,16 @@ export function range(start, end) {
       .map((_, index) => start + index);
 }
 
-export function storage(key, data = null) {
+export function storage(key, data?) {
   if (!data) {
     return JSON.parse(localStorage.getItem(key));
   }
   localStorage.setItem(key, JSON.stringify(data));
 }
 
-export function debounce(fn, wait) {
-  let timeout;
-  return function(...args) {
+export function debounce(fn: any, wait: number): any {
+  let timeout: any;
+  return function(...args: any[]): any {
     const later = () => {
       clearTimeout(timeout);
       // eslint-disable-next-line
@@ -26,10 +26,10 @@ export function debounce(fn, wait) {
   }
 }
 
-export function clone(obj) {
+export function clone(obj: any): any {
   return JSON.parse(JSON.stringify(obj));
 }
 
-export function preventDefault(event) {
+export function preventDefault(event: any): void {
   event.preventDefault();
 }

@@ -1,12 +1,12 @@
-import { $, Dom } from '../dom';
+import { $, Dom } from '../Dom';
 import ActiveRoute from './ActiveRoute';
 
 class Router {
   private $placeholder: Dom;
-  private routes: any;
+  private routes: any[];
   private page: any;
 
-  constructor(selector: HTMLElement, routes: any) {
+  constructor(selector: HTMLElement, routes: any[]) {
     if (!selector) {
       throw new Error('Selector is not provided in Router!');
     }

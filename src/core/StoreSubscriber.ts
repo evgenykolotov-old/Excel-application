@@ -1,8 +1,7 @@
-import { Subscriber } from '../shared/StoreSubscriber';
-import { Store } from '../shared/Store';
+import Store from './Store';
 import { State } from '../shared/State';
 
-class StoreSubscriber implements Subscriber {
+class StoreSubscriber {
   public store: Store;
   public sub: any;
   public prevState: State;

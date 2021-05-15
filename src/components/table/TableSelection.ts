@@ -1,7 +1,6 @@
-import { Dom } from "../../core/dom";
-import { Selection } from '../../shared/TableSelection';
+import { Dom } from "../../core/Dom";
 
-class TableSelection implements Selection {
+class TableSelection {
   static className = 'selected';
   private group: Dom[];
   public current: Dom | null;

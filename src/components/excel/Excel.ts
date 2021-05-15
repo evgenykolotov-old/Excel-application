@@ -1,20 +1,19 @@
-import { $, Dom } from '../../core/dom';
+import { $, Dom } from '../../core/Dom';
 import Emitter from '../../core/Emitter';
+import Store from '../../core/Store';
 import StoreSubscriber from '../../core/StoreSubscriber';
 import { preventDefault } from '../../core/utils';
-import { EventEmitter } from '../../shared/Emitter';
-import { Store } from '../../shared/Store';
-import { Subscriber } from '../../shared/StoreSubscriber';
+import { ExcelOptions } from '../../shared/Component';
 import { updateDate } from '../../store/actions';
 
 class Excel {
-  private components: any[];
+  private components: any[] = [];
   private store: Store;
-  private emitter: EventEmitter;
-  private subscriber: Subscriber;
+  private emitter: Emitter;
+  private subscriber: StoreSubscriber;
 
-  constructor(options: any) {
-    this.components = options.components || [];
+  constructor(options: ExcelOptions) {
+    this.components = options.components;
     this.store = options.store;
     this.emitter = new Emitter();
     this.subscriber = new StoreSubscriber(this.store);

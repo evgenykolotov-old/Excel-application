@@ -1,34 +1,35 @@
-import Page from '@core/Page';
-import Excel from '@/components/excel/Excel';
-import Header from '@/components/header/Header';
-import Toolbar from '@/components/toolbar/Toolbar';
-import Formula from '@/components/formula/Formula';
-import Table from '@/components/table/Table';
-import { createStore } from '@core/createStore';
+import Page from '../core/Page';
+import Excel from '../components/excel/Excel';
+import Header from '../components/header/Header';
+import Toolbar from '../components/toolbar/Toolbar';
+import Formula from '../components/formula/Formula';
+import Table from '../components/table/Table';
+import Store from '../core/Store';
 import { rootReducer } from '../store/rootReducer';
-import { storage } from '@core/utils';
+import { storage } from '../core/utils';
 import { normalizeInitialState } from '../store/initialState';
-import { debounce } from '@core/utils';
-
-function storageName(param) {
-  return 'excel:' + param;
-}
+import { debounce } from '../core/utils';
+import { Dom } from '../core/Dom';
+import { State } from '../shared/State';
 
 class ExcelPage extends Page {
-  constructor(param) {
+  private storeSub: any;
+  private excel: Excel | null = null;
+
+  constructor(param: string) {
     super(param);
     this.storeSub = null;
   }
 
-  getRoot() {
-    const params = this.params ? this.params : Date.now().toString();
+  public getRoot(): Dom {
+    const param = this.param ? this.param : Date.now().toString();
 
-    const state = storage(storageName(params));
-    const store = createStore(rootReducer, normalizeInitialState(state));
+    const state = storage(this.storageName(param));
+    const store = new Store(rootReducer, normalizeInitialState(state));
 
-    const stateListener = debounce(state => {
-      storage(storageName(params), state);
-    });
+    const stateListener = debounce((state: State) => {
+      storage(this.storageName(param), state);
+    }, 600);
 
     this.storeSub = store.subscribe(stateListener);
 
@@ -39,13 +40,17 @@ class ExcelPage extends Page {
     return this.excel.getRoot();
   }
 
-  afterRender() {
-    this.excel.init();
+  public afterRender(): void {
+    this.excel?.init();
   }
 
-  destroy() {
-    this.excel.destroy();
+  public destroy(): void {
+    this.excel?.destroy();
     this.storeSub.unsubscribe();
+  }
+
+  private storageName(param: string): string {
+    return 'excel:' + param;
   }
 }
 

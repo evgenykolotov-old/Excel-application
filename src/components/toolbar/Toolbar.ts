@@ -1,12 +1,13 @@
 import ExcelStateComponent from '../../core/ExcelStateComponent';
 import { createToolbar } from './toolbar.template';
 import { defaultStyles } from '../../constants';
-import { $, Dom } from '../../core/dom';
+import { $, Dom } from '../../core/Dom';
+import { ComponentOptions } from '../../shared/Component';
 
 class Toolbar extends ExcelStateComponent {
   static className = 'excel__toolbar';
 
-  constructor($root: Dom, options: any) {
+  constructor($root: Dom, options: ComponentOptions) {
     super($root, {
       name: 'Toolbar',
       listeners: ['click'],

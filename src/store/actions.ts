@@ -1,10 +1,11 @@
 import * as actions from './types';
+import { DataState } from '../shared/State';
 
-type Action = (data?: any) => ActionData;
+type Action = (data?: DataState) => ActionData;
 
 export interface ActionData {
   type: string;
-  data?: any;
+  data?: DataState;
 }
 
 export const tableResize: Action = (data) => ({

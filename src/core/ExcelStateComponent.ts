@@ -2,7 +2,7 @@ import ExcelComponent from './ExcelComponent';
 import { State } from '../shared/State';
 
 abstract class ExcelStateComponent extends ExcelComponent {
-  protected state: State;
+  protected state: State = {};
 
   protected get template(): string {
     return JSON.stringify(this.state, null, 2);

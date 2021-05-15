@@ -1,13 +1,13 @@
+import { Dom } from "./Dom";
+
 abstract class Page {
-  public params: any;
+  protected param: string;
 
-  constructor(params: any) {
-    this.params = params;
+  constructor(param: string) {
+    this.param = param;
   }
 
-  public getRoot(): void {
-    throw new Error('Method getRoot should be implemented');
-  }
+  public abstract getRoot(): Dom | string;
 
   public abstract afterRender(): void;
 

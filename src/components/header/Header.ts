@@ -2,12 +2,13 @@ import ExcelComponent from '../../core/ExcelComponent';
 import ActiveRoute from '../../core/routes/ActiveRoute';
 import { changeTitle } from '../../store/actions';
 import { defaultTitle } from '../../constants';
-import { $, Dom } from '../../core/dom';
+import { $, Dom } from '../../core/Dom';
+import { ComponentOptions } from '../../shared/Component';
 
 class Header extends ExcelComponent {
   static className = 'excel__header';
 
-  constructor($root: Dom, options: any) {
+  constructor($root: Dom, options: ComponentOptions) {
     super($root, {
       name: 'Header',
       listeners: ['input', 'click'],
@@ -41,7 +42,7 @@ class Header extends ExcelComponent {
 
   protected onInput(event: any): void {
     const $target = $(event.target);
-    this.$dispatch(changeTitle($target.text()));
+    this.$dispatch(changeTitle(<string>$target.text()));
   }
 
   protected onClick(event: any): void {

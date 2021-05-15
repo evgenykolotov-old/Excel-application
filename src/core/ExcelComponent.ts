@@ -1,16 +1,18 @@
 import DomListener from './DomListener';
-import { EventEmitter } from '../shared/Emitter';
-import { Store } from '../shared/Store';
+import Emitter from './Emitter';
+import Store from './Store';
 import { ActionData } from '../store/actions';
+import { Dom } from './Dom';
+import { ExcelComponentOptions } from '../shared/Component';
 
 abstract class ExcelComponent extends DomListener {
   public name: string;
-  public emitter: EventEmitter;
-  public subscribe: unknown = [];
+  public emitter: Emitter;
+  public subscribe: any[] = [];
   public store: Store;
-  public unsubscribers: unknown[] = [];
+  public unsubscribers: any[] = [];
 
-  constructor($root: unknown, options: any) {
+  constructor($root: Dom, options: ExcelComponentOptions) {
     super($root, options.listeners);
     this.name = options.name || '';
     this.emitter = options.emitter;
@@ -42,18 +44,20 @@ abstract class ExcelComponent extends DomListener {
 
   protected abstract storeChanged(changes?: any): void;
 
-  public toHTML(): string {
-    return '';
-  }
-
-  public init(): void {
+  protected init(): void {
     this.initDOMListeners();
   }
 
-  public destroy(): void {
+  protected destroy(): void {
     this.removeDOMListeners();
     this.unsubscribers.forEach(unsub => unsub());
   }
+
+  /**
+   * Абстрактный метод для описания шаблона компонента;
+   * @returns string;
+   */
+  public abstract toHTML(): string;
 }
 
 export default ExcelComponent;

@@ -1,9 +1,9 @@
-import Page from '@core/Page'
-import {$} from '@core/dom'
+import Page from '../core/Page'
+import {$, Dom} from '../core/Dom';
 import { createRecordsTable } from './dashboard.functions'
 
 export class DashboardPage extends Page {
-  getRoot() {
+  public getRoot(): Dom | string {
     const now = Date.now().toString()
     return $.create('div', 'db').html(`
       <div class="db__header">
@@ -22,6 +22,14 @@ export class DashboardPage extends Page {
         ${createRecordsTable()}
       </div>
     `)
+  }
+
+  public afterRender(): void {
+    console.log('After Render DashboardPage');
+  }
+
+  public destroy(): void {
+    console.log('Destroy DashboardPage');
   }
 }
 

@@ -1,6 +1,8 @@
-import { EventEmitter, EventListener } from '../shared/Emitter';
+export interface EventListener {
+  [key: string]: Array<(...args: unknown[]) => unknown>;
+}
 
-class Emitter implements EventEmitter {
+class Emitter {
   private listeners: EventListener = {};
 
   public emit(event: string, ...args: unknown[]): boolean {

@@ -13,7 +13,7 @@ const defaultState: State = {
   openedDate: new Date().toJSON(),
 }
 
-const normalize = (state: State) => ({
+const normalize = (state: State): State => ({
   ...state, currentStyles: defaultStyles, currentText: ''
 })
 

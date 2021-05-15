@@ -1,6 +1,6 @@
-import { storage } from '@core/utils';
+import { storage } from '../core/utils';
 
-function toHTML(key) {
+function toHTML(key: string) {
   const model = storage(key);
   const id = key.split(':')[1];
   return `
@@ -15,10 +15,10 @@ function toHTML(key) {
 }
 
 function getAllKeys() {
-  const keys = [];
+  const keys: string[] = [];
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
-    if (!key.includes('excel')) {
+    if (!key?.includes('excel')) {
       continue;
     }
     keys.push(key);
@@ -26,7 +26,7 @@ function getAllKeys() {
   return keys
 }
 
-export function createRecordsTable() {
+export function createRecordsTable(): string {
   const keys = getAllKeys();
 
   if (!keys.length) {

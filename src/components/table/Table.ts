@@ -1,19 +1,19 @@
 import ExcelComponent from '../../core/ExcelComponent';
 import TableFactory from './TableFactory';
-import { Selection } from '../../shared/TableSelection';
 import { resizeHandler } from './table.resize';
 import { isCell, matrix, shouldResize, nextSelector } from './table.functions';
 import { defaultStyles } from '../../constants';
 import TableSelection from './TableSelection';
 import * as actions from '../../store/actions';
-import { $, Dom } from '../../core/dom';
+import { $, Dom } from '../../core/Dom';
+import { ComponentOptions } from '../../shared/Component';
 
 class Table extends ExcelComponent {
   static className = 'excel__table';
   public $root: Dom;
-  private selection: Selection;
+  private selection: TableSelection;
 
-  constructor($root: Dom, options: any) {
+  constructor($root: Dom, options: ComponentOptions) {
     super($root, {
       name: 'Table',
       listeners: ['mousedown', 'keydown', 'input'],
