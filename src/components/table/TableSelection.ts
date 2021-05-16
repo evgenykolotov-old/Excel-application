@@ -1,4 +1,5 @@
 import { Dom } from "../../core/Dom";
+import { Styles } from "../../shared/State";
 
 class TableSelection {
   static className = 'selected';
@@ -28,12 +29,12 @@ class TableSelection {
     this.group.forEach($elem => $elem.addClass(TableSelection.className));
   }
 
-  public applyStyle(style: any): void {
+  public applyStyle(style: Styles): void {
     this.group.forEach($elem => $elem.css(style));
   }
 
-  public get selectedIds(): any {
-    return this.group.map($elem => $elem.id());
+  public get selectedIds(): string[] {
+    return this.group.map($elem => <string>$elem.id());
   }
 }
 

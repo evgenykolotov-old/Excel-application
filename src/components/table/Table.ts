@@ -49,11 +49,13 @@ class Table extends ExcelComponent {
     })
 
     this.$on('toolbar:applyStyle', value => {
-      this.selection.applyStyle(value);
-      this.$dispatch(actions.applyStyles({
-        value,
-        ids: this.selection.selectedIds,
-      }));
+      if (typeof value !==  'string' && typeof value !== 'undefined' && !(value instanceof Dom)) {
+        this.selection.applyStyle(value);
+        this.$dispatch(actions.applyStyles({
+          value,
+          ids: this.selection.selectedIds,
+        }));
+      }
     })
   }
 
@@ -104,10 +106,12 @@ class Table extends ExcelComponent {
   }
 
   protected updateTextInStore(value: string): void {
-    this.$dispatch(actions.changeText({
-      id: this.selection.current?.id(),
-      value,
-    }));
+    if (this.selection.current) {
+      this.$dispatch(actions.changeText({
+        id: <string>this.selection.current.id(),
+        value,
+      }));
+    }
   }
 
   protected onInput(event: Event): void {

@@ -1,3 +1,4 @@
+import { Dom } from '../../core/Dom';
 import { range } from '../../core/utils';
 
 export function shouldResize(event: any): any {
@@ -8,7 +9,7 @@ export function isCell(event: any): any {
   return event.target.dataset.type === 'cell';
 }
 
-export function matrix($target: any, $current: any): Array<any> {
+export function matrix($target: Dom, $current: Dom): Array<string> {
   const target = $target.id(true);
   const current = $current.id(true);
   const cols = range(current.col, target.col);
@@ -19,7 +20,7 @@ export function matrix($target: any, $current: any): Array<any> {
   }, []);
 }
 
-export function nextSelector(key: any, { col, row }: { col: any, row: any}): string {
+export function nextSelector(key: string, { col, row }: { col: number, row: number}): string {
   const MIN_VALUE = 0;
   switch (key) {
     case 'Enter':

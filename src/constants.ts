@@ -1,4 +1,6 @@
-export const defaultStyles = {
+import { Styles } from "./shared/State";
+
+export const defaultStyles: Styles = {
   textAlign: 'left',
   fontWeight: 'normal',
   fontStyle: 'normal',

@@ -1,3 +1,5 @@
+import { Styles } from "../shared/State";
+
 export class Dom {
   private $elem: HTMLElement;
 
@@ -69,9 +71,9 @@ export class Dom {
     return this.$elem.querySelectorAll(selector);
   }
 
-  public css(styles = {}): void {
+  public css(styles: { [key: string]: string } | Styles): void {
     Object.entries(styles).forEach(([key, value]) => {
-      this.$elem.style[key] = value;
+      this.$elem.style[key as any] = value;
     })
   }
 
@@ -85,9 +87,9 @@ export class Dom {
     return this;
   }
 
-  public id(parse?: boolean): any {
+  public id(parse?: boolean): string | undefined | { row: number; col: number } {
     if (parse) {
-      const parsed = this.id().split(':');
+      const parsed = (<string>this.id()).split(':');
       return {
         row: parseInt(parsed[0]),
         col: parseInt(parsed[1]),
@@ -101,9 +103,9 @@ export class Dom {
     return this;
   }
 
-  public getStyles(styles = []): any {
+  public getStyles(styles = []): { [key: string]: string } {
     return styles.reduce((acc, item) => {
-      acc[item] = this.$elem.style[item];
+      (<string>acc[item]) = this.$elem.style[item];
       return acc;
     }, {});
   }

@@ -1,32 +1,26 @@
+export interface State {
+    title?: string;
+    colState?: ColState;
+    rowState?: RowState;
+    dataState?: ChangeTextData;
+    currentText?: string;
+    currentStyles?: Styles;
+    stylesState?: CurrentStyles;
+    openedDate?: string;
+}
+
 interface ColState {
-    [key: number]: string;
+    [key: string]: string;
 }
 
 interface RowState {
-    [key: number]: string;
-}
-
-export interface CurrentStyles {
-    [key: string]: string
-}
-
-interface ColResizeState {
-    col?: ResizeData;
-}
-
-interface RowResizeState {
-    row?: ResizeData;
-}
-
-interface ResizeData {
-    type: 'col' | 'row';
-    id: string;
-    value: number;
+    [key: string]: string;
 }
 
 export interface ChangeTextData {
-    id: number;
+    id: string;
     value: string;
+    [key: string]: string;
 }
 
 export interface Styles {
@@ -36,27 +30,24 @@ export interface Styles {
     textDecoration?: TextDecoration;
 }
 
-export interface ApplyStyle {
-    id: number[];
-    value: Styles;
-}
-
 type TextAlign = 'left' | 'center' | 'right';
 type FontWeight = 'normal' | 'bold';
 type FontStyle = 'normal' | 'italic';
 type TextDecoration = 'none' | 'underline';
 
-export type ResizeState = ColResizeState | RowResizeState;
-export type DataState = ColState | RowState | CurrentStyles | string;
-
-export interface State {
-    title?: string;
-    colState?: ColState;
-    rowState?: RowState;
-    dataState?: ResizeState;
-    currentText?: string;
-    currentStyles?: CurrentStyles;
-    stylesState?: CurrentStyles;
-    openedDate?: string;
-    [key: string]: unknown;
+export interface CurrentStyles {
+    [key: string]: Styles
 }
+
+export interface ApplyStyle {
+    ids: string[];
+    value: Styles;
+}
+
+export interface ResizeState {
+    type: 'col' | 'row';
+    id: string;
+    value: string;
+}
+
+export type DataState = ColState | RowState | ChangeTextData | Styles | CurrentStyles | string;
