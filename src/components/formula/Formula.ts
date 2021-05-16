@@ -1,6 +1,7 @@
 import ExcelComponent from '../../core/ExcelComponent';
 import { $, Dom } from '../../core/Dom';
 import { ComponentOptions } from '../../shared/Component';
+import { State } from '../../shared/State';
 
 class Formula extends ExcelComponent {
   static className = 'excel__formula';
@@ -25,8 +26,10 @@ class Formula extends ExcelComponent {
     super.init();
     this.$formula = this.$root.find('#formula');
 
-    this.$on('table:select', ($cell: any) => {
-      this.$formula && this.$formula.text($cell.text());
+    this.$on('table:select', ($cell) => {
+      if ($cell instanceof Dom) {
+        this.$formula && this.$formula.text(<string>$cell.text());
+      }
     })
   }
 
@@ -37,15 +40,15 @@ class Formula extends ExcelComponent {
     `;
   }
 
-  protected storeChanged({ currentText }: any): void {
+  protected storeChanged({ currentText }: State): void {
     this.$formula && this.$formula.text(currentText);
   }
 
-  protected onInput(event: any): void {
-    this.$emit('formula:input', $(event.target).text());
+  protected onInput(event: Event): void {
+    this.$emit('formula:input', $(<HTMLElement>event.target).text());
   }
 
-  protected onKeydown(event: any): void {
+  protected onKeydown(event: KeyboardEvent): void {
     const keys = ['Enter', 'Tab'];
     if (keys.includes(event.key)) {
       event.preventDefault();

@@ -37,9 +37,11 @@ class Table extends ExcelComponent {
 
     this.selectCell(this.$root.find('[data-id="0:0"]'));
 
-    this.$on('formula:input', (text: any) => {
-      this.selection.current?.text(text);
-      this.updateTextInStore(text)
+    this.$on('formula:input', (text) => {
+      if (typeof text === 'string') {
+        this.selection.current?.text(text);
+        this.updateTextInStore(text);
+      }
     })
 
     this.$on('formula:done', () => {
@@ -67,7 +69,7 @@ class Table extends ExcelComponent {
     this.$dispatch(actions.changeStyles(styles));
   }
 
-  private async resizeTable(event: any): Promise<void> {
+  private async resizeTable(event: Event): Promise<void> {
     try {
       const data = await resizeHandler(this.$root, event);
       this.$dispatch(actions.tableResize(data));
@@ -76,14 +78,14 @@ class Table extends ExcelComponent {
     }
   }
 
-  protected onMousedown(event: any): void {
+  protected onMousedown(event: MouseEvent): void {
     if (shouldResize(event)) {
       this.resizeTable(event);
     } else if (isCell(event)) {
-      const $target = $(event.target);
+      const $target = $(<HTMLElement>event.target);
       if (event.shiftKey) {
         const $cells = matrix($target, this.selection.current)
-            .map((id: any) => this.$root.find(`[data-id="${id}"]`));
+            .map((id: number) => this.$root.find(`[data-id="${id}"]`));
         this.selection.selectGroup($cells);
       } else {
         this.selectCell($target);
@@ -91,7 +93,7 @@ class Table extends ExcelComponent {
     }
   }
 
-  protected onKeydown(event: any): void {
+  protected onKeydown(event: KeyboardEvent): void {
     const keys = ['Enter', 'Tab', 'ArrowLeft', 'ArrowRight', 'ArrowDown', 'ArrowUp'];
     if (keys.includes(event.key) && !event.shiftKey) {
       event.preventDefault();
@@ -101,15 +103,15 @@ class Table extends ExcelComponent {
     }
   }
 
-  protected updateTextInStore(value: any): void {
+  protected updateTextInStore(value: string): void {
     this.$dispatch(actions.changeText({
       id: this.selection.current?.id(),
       value,
     }));
   }
 
-  protected onInput(event: any): void {
-    this.updateTextInStore($(event.target).text());
+  protected onInput(event: Event): void {
+    this.updateTextInStore(<string>$(<HTMLElement>event.target).text());
   }
 }
 

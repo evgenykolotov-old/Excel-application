@@ -40,13 +40,13 @@ class Header extends ExcelComponent {
     `;
   }
 
-  protected onInput(event: any): void {
-    const $target = $(event.target);
+  private onInput(event: Event): void {
+    const $target = $(<HTMLElement>event.target);
     this.$dispatch(changeTitle(<string>$target.text()));
   }
 
-  protected onClick(event: any): void {
-    const $target = $(event.target);
+  private onClick(event: Event): void {
+    const $target = $(<HTMLElement>event.target);
     if ($target.data.button === 'remove') {
       const decision = window.confirm('Вы действительно хотите удалить эту таблицу?');
       if (decision) {

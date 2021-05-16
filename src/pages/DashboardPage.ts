@@ -1,6 +1,6 @@
-import Page from '../core/Page'
+import Page from '../core/Page';
 import {$, Dom} from '../core/Dom';
-import { createRecordsTable } from './dashboard.functions'
+import { storage } from '../core/utils';
 
 export class DashboardPage extends Page {
   public getRoot(): Dom | string {
@@ -19,7 +19,7 @@ export class DashboardPage extends Page {
       </div>
 
       <div class="db__table db__view">
-        ${createRecordsTable()}
+        ${this.createRecordsTable()}
       </div>
     `)
   }
@@ -30,6 +30,51 @@ export class DashboardPage extends Page {
 
   public destroy(): void {
     console.log('Destroy DashboardPage');
+  }
+
+  private toHTML(key: string): string {
+    const model = storage(key);
+    const id = key.split(':')[1];
+    return `
+      <li class="db__record">
+        <a href="#excel/${id}">${model.title}</a>
+        <strong>
+          ${new Date(model.openedDate).toLocaleDateString()}
+          ${new Date(model.openedDate).toLocaleTimeString()}
+        </strong>
+      </li>
+    `;
+  }
+
+  private getAllKeys(): string[] {
+    const keys: string[] = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (!key?.includes('excel')) {
+        continue;
+      }
+      keys.push(key);
+    }
+    return keys
+  }
+
+  private createRecordsTable(): string {
+    const keys = this.getAllKeys();
+  
+    if (!keys.length) {
+      return `<p>Вы пока не создали ни одной таблицы</p>`;
+    }
+  
+    return `
+      <div class="db__list-header">
+        <span>Название</span>
+        <span>Дата открытия</span>
+      </div>
+  
+      <ul class="db__list">
+        ${keys.map(this.toHTML).join('')}
+      </ul>
+    `;
   }
 }
 

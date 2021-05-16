@@ -1,9 +1,10 @@
 import DomListener from './DomListener';
 import Emitter from './Emitter';
 import Store from './Store';
-import { ActionData } from '../store/actions';
 import { Dom } from './Dom';
 import { ExcelComponentOptions } from '../shared/Component';
+import { Action } from '../store/actions';
+import { Styles } from '../shared/State';
 
 abstract class ExcelComponent extends DomListener {
   public name: string;
@@ -25,16 +26,16 @@ abstract class ExcelComponent extends DomListener {
 
   protected abstract prepare(): void;
 
-  protected $emit(event: string, ...args: unknown[]): void {
-    this.emitter.emit(event, ...args);
+  protected $emit(event: string, data?: Dom | Styles | string): void {
+    this.emitter.emit(event, data);
   }
 
-  protected $on(event: string, fn: (...args: unknown[]) => unknown): void {
+  protected $on(event: string, fn: (data?: Dom | Styles | string) => void): void {
     const unsub = this.emitter.subscribe(event, fn);
     this.unsubscribers.push(unsub);
   }
 
-  protected $dispatch(action: ActionData): void {
+  protected $dispatch(action: Action): void {
     this.store.dispatch(action);
   }
 

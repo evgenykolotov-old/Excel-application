@@ -1,17 +1,17 @@
-import * as actions from './types';
+import { ActionTypes } from './types';
 import { State } from '../shared/State';
-import { ActionData } from './actions';
+import { Action } from './actions';
 
-export type RootReducer = (state: State, action: ActionData) => State;
+export type RootReducer = (state: State, action: Action) => State;
 
 export const rootReducer: RootReducer = function(state, action) {
   switch (action.type) {
-    case actions.TABLE_RESIZE: {
+    case ActionTypes.TABLE_RESIZE: {
       const field = action.data.type === 'col' ? 'colState' : 'rowState';
       return { ...state, [field]: value(state, field, action) };
     }
 
-    case actions.CHANGE_TEXT: {
+    case ActionTypes.CHANGE_TEXT: {
       const field = 'dataState';
       return {
         ...state,
@@ -20,11 +20,11 @@ export const rootReducer: RootReducer = function(state, action) {
       };
     }
 
-    case actions.CHANGE_STYLES: {
+    case ActionTypes.CHANGE_STYLES: {
       return { ...state, currentStyles: action.data };
     }
 
-    case actions.APPLY_STYLE: {
+    case ActionTypes.APPLY_STYLE: {
       const field = 'stylesState';
       const val = state[field] || {};
       action.data.ids.forEach((id: string) => {
@@ -37,17 +37,17 @@ export const rootReducer: RootReducer = function(state, action) {
       };
     }
 
-    case actions.CHANGE_TITLE:
+    case ActionTypes.CHANGE_TITLE:
       return {...state, title: action.data };
 
-    case actions.UPDATE_DATE:
+    case ActionTypes.UPDATE_DATE:
       return { ...state, openedDate: new Date().toJSON() };
 
     default: return state;
   }
 }
 
-function value(state: State, field: string, action: ActionData) {
+function value(state: State, field: string, action: Action) {
   const val = state[field] || {};
   val[action.data.id] = action.data.value;
   return val;
