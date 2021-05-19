@@ -1,6 +1,14 @@
 import { clone } from '../core/utils';
-import { State } from '../shared/State';
-import { defaultStyles, defaultTitle } from '../constants';
+import { State, Styles } from '../shared/State';
+
+export const defaultTitle = 'Новая таблица';
+
+export const defaultStyles: Styles = {
+  textAlign: 'left',
+  fontWeight: 'normal',
+  fontStyle: 'normal',
+  textDecoration: 'none',
+}
 
 const defaultState: State = {
   title: defaultTitle,

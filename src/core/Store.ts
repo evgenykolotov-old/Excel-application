@@ -1,13 +1,13 @@
 import { State } from '../shared/State';
 import { RootReducer } from '../store/rootReducer';
-import { ActionData } from '../store/actions';
+import { Action } from '../store/actions';
 
 class StoreCreator {
   private state: State;
   private listeners: Array<(...args: unknown[]) => unknown>;
 
   constructor(private rootReducer: RootReducer, initialState: State) {
-    this.state = this.rootReducer({ ...initialState }, { type: '__INIT__' });
+    this.state = { ...initialState };
     this.listeners = [];
   }
 
@@ -20,7 +20,7 @@ class StoreCreator {
     }
   }
 
-  public dispatch(action: ActionData): void {
+  public dispatch(action: Action): void {
     this.state = this.rootReducer(this.state, action);
     this.listeners.forEach(listener => listener(this.state));
   }

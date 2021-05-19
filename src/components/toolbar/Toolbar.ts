@@ -1,8 +1,7 @@
 import ExcelStateComponent from '../../core/ExcelStateComponent';
-import { defaultStyles } from '../../constants';
 import { $, Dom } from '../../core/Dom';
-import { ComponentOptions } from '../../shared/Component';
-import { State, CurrentStyles, Styles } from '../../shared/State';
+import { Component, ComponentOptions } from '../../shared/Component';
+import { State, Styles } from '../../shared/State';
 
 interface Button {
   icon: string;
@@ -10,7 +9,7 @@ interface Button {
   value: Styles
 }
 
-class Toolbar extends ExcelStateComponent {
+class Toolbar extends ExcelStateComponent implements Component {
   static className = 'excel__toolbar';
 
   constructor($root: Dom, options: ComponentOptions) {
@@ -22,20 +21,19 @@ class Toolbar extends ExcelStateComponent {
     });
   }
 
-  protected prepare(): void {
-    this.initState(defaultStyles);
-  }
-
-  protected storeChanged(changes: State): void {
-    this.setState(<CurrentStyles>changes.currentStyles);
-  }
-
-  protected get template(): string {
-    return this.createToolbar(this.state);
+  public storeChanged(changes: State): void {
+      this.setState(changes);
   }
 
   public toHTML(): string {
     return this.template;
+  }
+
+  protected get template(): string {
+    if (this.state.currentStyles) {
+      return this.createToolbar(this.state.currentStyles);
+    }
+    return this.createToolbar({});
   }
 
   private onClick(event: Event): void {
@@ -46,7 +44,7 @@ class Toolbar extends ExcelStateComponent {
     }
   }
 
-  private createToolbar(state: State): string {
+  private createToolbar(state: Styles): string {
     const buttons: Button[] = [
       {
         icon: 'format_align_left',

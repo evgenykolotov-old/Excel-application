@@ -1,5 +1,5 @@
-import { defaultStyles } from '../../constants';
-import { State } from '../../shared/State';
+import { defaultStyles } from '../../store/initialState';
+import { State, ColState, Styles, RowState } from '../../shared/State';
 
 class TableFactory {
   private CODES = { A: 65, Z: 90 };
@@ -39,7 +39,7 @@ class TableFactory {
     return String.fromCharCode(this.CODES.A + index);
   }
 
-  private withWidthFrom(state: any): (col: string, index: number) => { col: string; index: number; width: string } {
+  private withWidthFrom(state: ColState): (col: string, index: number) => { col: string; index: number; width: string } {
     const getWidth = this.getWidth.bind(this);
     return function(col: string, index: number): { col: string; index: number; width: string } {
       const width = getWidth(state, index);
@@ -47,7 +47,7 @@ class TableFactory {
     }
   }
 
-  private getWidth(state: any, index: number): string {
+  private getWidth(state: ColState, index: number): string {
     return (state[index] || this.DEFAULT_WIDTH) + 'px';
   }
 
@@ -61,7 +61,7 @@ class TableFactory {
   }
 
 
-  private createRow(index: number | null, content: string, state: any): string {
+  private createRow(index: number | null, content: string, state: RowState): string {
     const resize = index ? '<div class="row-resize" data-resize="row"></div>' : '';
     const height = this.getHeight(state, index);
     return `
@@ -75,18 +75,18 @@ class TableFactory {
     `;
   }
 
-  private getHeight(state: any, index: number | null): string {
+  private getHeight(state: RowState, index: number | null): string {
     return (index && state[index] || this.DEFAULT_HEIGHT) + 'px';
   }
 
-  private toCell(state: State, row: number): (_: any, col: number) => string {
+  private toCell(state: State, row: number): (_: unknown, col: number) => string {
     const getWidth = this.getWidth.bind(this);
     const toInlineStyles = this.toInlineStyles.bind(this);
 
-    return function(_: any, col: number): string {
+    return function(_: unknown, col: number): string {
       const width = getWidth(state.colState, col);
       const id = `${row}:${col}`;
-      const data = state.dataState[id];
+      const data = state.dataState && state.dataState[id];
       const styles = toInlineStyles({
         ...defaultStyles,
         ...state.stylesState[id]
@@ -103,9 +103,9 @@ class TableFactory {
     }
   }
 
-  private toInlineStyles(styles: any = {}): string {
+  private toInlineStyles(styles: Styles = {}): string {
     return Object.keys(styles)
-        .map(key => `${this.camelToDashCase(key)}: ${styles[key]}`)
+        .map(key => `${this.camelToDashCase(key)}: ${styles[<keyof Styles>key]}`)
         .join(';');
   }
 

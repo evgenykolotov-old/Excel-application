@@ -1,9 +1,9 @@
 import ExcelComponent from '../../core/ExcelComponent';
 import { $, Dom } from '../../core/Dom';
-import { ComponentOptions } from '../../shared/Component';
+import { Component, ComponentOptions } from '../../shared/Component';
 import { State } from '../../shared/State';
 
-class Formula extends ExcelComponent {
+class Formula extends ExcelComponent implements Component {
   static className = 'excel__formula';
   private $formula: Dom | null = null;
   public $root: Dom;
@@ -16,10 +16,6 @@ class Formula extends ExcelComponent {
       ...options
     });
     this.$root = $root;
-  }
-
-  protected prepare(): void {
-    console.log('Prepare Formula');
   }
 
   public init(): void {
@@ -40,15 +36,16 @@ class Formula extends ExcelComponent {
     `;
   }
 
-  protected storeChanged({ currentText }: State): void {
+  public storeChanged(data: State): void {
+    const { currentText } = data;
     this.$formula && this.$formula.text(currentText);
   }
 
-  protected onInput(event: Event): void {
-    this.$emit('formula:input', $(<HTMLElement>event.target).text());
+  private onInput(event: InputEvent): void {
+    this.$emit('formula:input', $(<HTMLInputElement>event.target).text());
   }
 
-  protected onKeydown(event: KeyboardEvent): void {
+  private onKeydown(event: KeyboardEvent): void {
     const keys = ['Enter', 'Tab'];
     if (keys.includes(event.key)) {
       event.preventDefault();

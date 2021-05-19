@@ -2,13 +2,13 @@ import ExcelComponent from '../../core/ExcelComponent';
 import TableFactory from './TableFactory';
 import { resizeHandler } from './table.resize';
 import { isCell, matrix, shouldResize, nextSelector } from './table.functions';
-import { defaultStyles } from '../../constants';
+import { defaultStyles } from '../../store/initialState';
 import TableSelection from './TableSelection';
 import * as actions from '../../store/actions';
 import { $, Dom } from '../../core/Dom';
-import { ComponentOptions } from '../../shared/Component';
+import { Component, ComponentOptions } from '../../shared/Component';
 
-class Table extends ExcelComponent {
+class Table extends ExcelComponent implements Component {
   static className = 'excel__table';
   public $root: Dom;
   private selection: TableSelection;
@@ -24,11 +24,7 @@ class Table extends ExcelComponent {
     this.selection = new TableSelection();
   }
 
-  protected prepare(): void {
-    console.log('Prepare Table');
-  }
-
-  protected storeChanged(): void {
+  public storeChanged(): void {
     console.log('StoreChanged Table');
   }
 
@@ -80,7 +76,7 @@ class Table extends ExcelComponent {
     }
   }
 
-  protected onMousedown(event: MouseEvent): void {
+  private onMousedown(event: MouseEvent): void {
     if (shouldResize(event)) {
       this.resizeTable(event);
     } else if (isCell(event)) {
@@ -95,7 +91,7 @@ class Table extends ExcelComponent {
     }
   }
 
-  protected onKeydown(event: KeyboardEvent): void {
+  private onKeydown(event: KeyboardEvent): void {
     const keys = ['Enter', 'Tab', 'ArrowLeft', 'ArrowRight', 'ArrowDown', 'ArrowUp'];
     if (keys.includes(event.key) && !event.shiftKey) {
       event.preventDefault();
@@ -105,7 +101,7 @@ class Table extends ExcelComponent {
     }
   }
 
-  protected updateTextInStore(value: string): void {
+  private updateTextInStore(value: string): void {
     if (this.selection.current) {
       this.$dispatch(actions.changeText({
         id: <string>this.selection.current.id(),
@@ -114,7 +110,7 @@ class Table extends ExcelComponent {
     }
   }
 
-  protected onInput(event: Event): void {
+  private onInput(event: Event): void {
     this.updateTextInStore(<string>$(<HTMLElement>event.target).text());
   }
 }

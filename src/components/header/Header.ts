@@ -1,11 +1,11 @@
 import ExcelComponent from '../../core/ExcelComponent';
 import ActiveRoute from '../../core/routes/ActiveRoute';
 import { changeTitle } from '../../store/actions';
-import { defaultTitle } from '../../constants';
+import { defaultTitle } from '../../store/initialState';
 import { $, Dom } from '../../core/Dom';
-import { ComponentOptions } from '../../shared/Component';
+import { Component, ComponentOptions } from '../../shared/Component';
 
-class Header extends ExcelComponent {
+class Header extends ExcelComponent implements Component {
   static className = 'excel__header';
 
   constructor($root: Dom, options: ComponentOptions) {
@@ -17,11 +17,7 @@ class Header extends ExcelComponent {
     });
   }
 
-  protected prepare(): void {
-    console.log('Prepare Header');
-  }
-
-  protected storeChanged(): void {
+  public storeChanged(): void {
     console.log('StoreChanged Header');
   }
 

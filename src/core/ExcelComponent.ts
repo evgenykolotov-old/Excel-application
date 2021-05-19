@@ -20,11 +20,7 @@ abstract class ExcelComponent extends DomListener {
     this.subscribe = options.subscribe;
     this.store = options.store;
     this.unsubscribers;
-
-    this.prepare();
   }
-
-  protected abstract prepare(): void;
 
   protected $emit(event: string, data?: Dom | Styles | string): void {
     this.emitter.emit(event, data);
@@ -43,13 +39,13 @@ abstract class ExcelComponent extends DomListener {
     return this.subscribe.includes(key);
   }
 
-  protected abstract storeChanged(changes?: any): void;
+  public abstract storeChanged(changes?: any): void;
 
-  protected init(): void {
+  public init(): void {
     this.initDOMListeners();
   }
 
-  protected destroy(): void {
+  public destroy(): void {
     this.removeDOMListeners();
     this.unsubscribers.forEach(unsub => unsub());
   }

@@ -1,9 +1,10 @@
 import Store from './Store';
 import { State } from '../shared/State';
+import { Unsubscriiber, Component } from '../shared/Component';
 
 class StoreSubscriber {
   public store: Store;
-  public sub: any;
+  public sub: Unsubscriiber | null;
   public prevState: State;
 
   constructor(store: Store) {
@@ -12,12 +13,12 @@ class StoreSubscriber {
     this.prevState = this.store.getState();
   }
 
-  public subscribeComponents(components: unknown[]): void {
+  public subscribeComponents(components: Component[]): void {
     this.prevState = this.store.getState();
     this.sub = this.store.subscribe((state: State) => {
       Object.keys(state).forEach(key => {
         if (!this.isEqual(this.prevState[key], state[key])) {
-          components.forEach((component: any) => {
+          components.forEach((component: Component) => {
             if (component.isWatching(key)) {
               const changes = { [key]: state[key] };
               component.storeChanged(changes);
@@ -30,7 +31,7 @@ class StoreSubscriber {
   }
 
   public unsubscribeFromStore(): void {
-    this.sub.unsubscribe();
+    this.sub && this.sub.unsubscribe();
   }
 
   private isEqual(a: unknown, b: unknown): boolean {
