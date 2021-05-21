@@ -1,23 +1,21 @@
 import { State } from '../shared/State';
 import { RootReducer } from '../store/rootReducer';
 import { Action } from '../store/actions';
-import { Unsubscriiber } from '../shared/Component';
+import { Listener, Unsubscriiber } from '../shared/Component';
 
 class StoreCreator {
   private state: State;
-  private listeners: Array<(...args: Array<keyof State>) => void>;
+  private listeners: Listener[];
 
   constructor(private rootReducer: RootReducer, initialState: State) {
     this.state = { ...initialState };
     this.listeners = [];
   }
 
-  public subscribe(fn: any): Unsubscriiber {
+  public subscribe(fn: Listener): Unsubscriiber {
     this.listeners.push(fn);
-    return {
-      unsubscribe() {
-        this.listeners = this.listeners.filter((listener: unknown) => listener !== fn);
-      }
+    return () => {
+        this.listeners = this.listeners.filter((listener: Listener) => listener !== fn);
     }
   }
 

@@ -18,7 +18,7 @@ abstract class DomListener {
       if (!this[method]) {
         throw new Error(`Method ${method} is not implemented`);
       }
-      (<Function>this[method]) = (<Function>this[method]).bind(this);
+      (<unknown>this[method])= (<any>this[method]).bind(this);
       this.$root.on(listener, this[method]);
     })
   }

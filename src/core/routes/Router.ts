@@ -1,12 +1,14 @@
+import { Routes } from '../../shared/Component';
 import { $, Dom } from '../Dom';
+import Page from '../Page';
 import ActiveRoute from './ActiveRoute';
 
 class Router {
   private $placeholder: Dom;
-  private routes: any[];
-  private page: any;
+  private routes: Routes;
+  private page: Page | null;
 
-  constructor(selector: HTMLElement, routes: any[]) {
+  constructor(selector: string, routes: Routes) {
     if (!selector) {
       throw new Error('Selector is not provided in Router!');
     }
@@ -32,9 +34,10 @@ class Router {
     }
     this.$placeholder.clear();
     const Page = ActiveRoute.path.includes('excel') ? this.routes.excel : this.routes.dashboard;
+    // eslint-disable-next-line
     this.page = new Page(ActiveRoute.param);
-    this.$placeholder.append(this.page.getRoot());
-    this.page.afterRender();
+    this.$placeholder.append(<Dom>this.page?.getRoot());
+    this.page?.afterRender();
   }
 }
 

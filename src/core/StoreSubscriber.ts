@@ -16,12 +16,12 @@ class StoreSubscriber {
   public subscribeComponents(components: Component[]): void {
     this.prevState = this.store.getState();
     this.sub = this.store.subscribe((state: State) => {
-      Object.keys(state).forEach((key) => {
-        if (!this.isEqual(this.prevState[key], state[key])) {
+      (<Array<keyof State>>Object.keys(state)).forEach((key) => {
+        if (!this.isEqual(<keyof State>this.prevState[key], <keyof State>state[key])) {
           components.forEach((component: Component) => {
             if (component.isWatching(key)) {
-              const changes = { [key]: state[key] };
-              component.storeChanged(changes);
+              const changes = { [key]: state[key] } as unknown;
+              component.storeChanged(<keyof State>changes);
             }
           })
         }
@@ -31,7 +31,7 @@ class StoreSubscriber {
   }
 
   public unsubscribeFromStore(): void {
-    this.sub && this.sub.unsubscribe();
+    this.sub && this.sub();
   }
 
   private isEqual(a: keyof State, b: keyof State): boolean {

@@ -1,11 +1,14 @@
+import { Dom } from '../core/Dom';
 import Emitter from '../core/Emitter';
+import Page from '../core/Page';
 import Store from '../core/Store';
-import { State } from './State';
+import { State, Styles } from './State';
 
 export interface Component {
     init: () => void;
     toHTML: () => string;
-    storeChanged: (data: keyof State) => void;
+    storeChanged: (data: State) => void;
+    isWatching: (key: keyof State) => boolean
 }
 
 export interface ExcelOptions {
@@ -24,8 +27,7 @@ export interface ExcelComponentOptions extends ComponentOptions {
     subscribe: Array<keyof State>,
 }
 
-export type Subscriber = (data?: keyof State) => void;
-
-export interface Unsubscriiber {
-    unsubscribe: () => void;
-}
+export type Subscriber = (data?: Styles | Dom | string) => void;
+export type Listener = (state: State) => void;
+export type Unsubscriiber = () => void;
+export type Routes = { excel: Page, dashboard: Page }; 

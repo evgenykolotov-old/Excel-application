@@ -1,19 +1,20 @@
 import { Subscriber } from '../shared/Component';
-import { State } from '../shared/State';
+import { Styles } from '../shared/State';
+import { Dom } from './Dom';
 
 export interface EventListener {
-  [key: string]: Array<(...arg: Array<keyof State>) => void>;
+  [key: string]: Subscriber[];
 }
 
 class Emitter {
   private listeners: EventListener = {};
 
-  public emit(event: string, ...args: Array<keyof State>): boolean {
+  public emit(event: string, data?: Dom | Styles | string): boolean {
     if (!Array.isArray(this.listeners[event])) {
       return false;
     }
     this.listeners[event].forEach(listener => {
-      listener(...args);
+      listener(data);
     });
     return true;
   }

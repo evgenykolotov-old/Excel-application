@@ -1,11 +1,9 @@
-import { Styles } from "../shared/State";
-
 export class Dom {
   private $elem: HTMLElement;
 
   constructor(selector: string | HTMLElement) {
     if (typeof(selector) === 'string') {
-      this.$elem = <HTMLElement>document.createElement(selector);
+      this.$elem = <HTMLElement>document.querySelector(selector);
     } else {
       this.$elem = selector;
     }
@@ -71,8 +69,9 @@ export class Dom {
     return this.$elem.querySelectorAll(selector);
   }
 
-  public css(styles: { [key: string]: string } | Styles): void {
+  public css(styles: CSSStyleDeclaration): void {
     Object.entries(styles).forEach(([key, value]) => {
+      // eslint-disable-next-line
       this.$elem.style[key as any] = value;
     })
   }

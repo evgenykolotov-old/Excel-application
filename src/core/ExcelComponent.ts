@@ -2,7 +2,7 @@ import DomListener from './DomListener';
 import Emitter from './Emitter';
 import Store from './Store';
 import { Dom } from './Dom';
-import { ExcelComponentOptions } from '../shared/Component';
+import { ExcelComponentOptions, Unsubscriiber } from '../shared/Component';
 import { Action } from '../store/actions';
 import { State, Styles } from '../shared/State';
 
@@ -11,7 +11,7 @@ abstract class ExcelComponent extends DomListener {
   public emitter: Emitter;
   public subscribe: Array<keyof State> = [];
   public store: Store;
-  public unsubscribers: any[] = [];
+  public unsubscribers: Unsubscriiber[] = [];
 
   constructor($root: Dom, options: ExcelComponentOptions) {
     super($root, options.listeners);
@@ -39,7 +39,7 @@ abstract class ExcelComponent extends DomListener {
     return this.subscribe.includes(key);
   }
 
-  public abstract storeChanged(changes?: any): void;
+  public abstract storeChanged(changes: State): void;
 
   public init(): void {
     this.initDOMListeners();
