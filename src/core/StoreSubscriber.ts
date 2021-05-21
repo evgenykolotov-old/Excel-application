@@ -16,7 +16,7 @@ class StoreSubscriber {
   public subscribeComponents(components: Component[]): void {
     this.prevState = this.store.getState();
     this.sub = this.store.subscribe((state: State) => {
-      Object.keys(state).forEach(key => {
+      Object.keys(state).forEach((key) => {
         if (!this.isEqual(this.prevState[key], state[key])) {
           components.forEach((component: Component) => {
             if (component.isWatching(key)) {
@@ -34,7 +34,7 @@ class StoreSubscriber {
     this.sub && this.sub.unsubscribe();
   }
 
-  private isEqual(a: unknown, b: unknown): boolean {
+  private isEqual(a: keyof State, b: keyof State): boolean {
     if (typeof(a) === 'object' && typeof(b) === 'object') {
       return JSON.stringify(a) === JSON.stringify(b);
     }

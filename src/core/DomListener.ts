@@ -16,9 +16,9 @@ abstract class DomListener {
     this.listeners.forEach(listener => {
       const method = this.getMethodName(listener);
       if (!this[method]) {
-        throw new Error(`Method ${method} is not implemented in ${this.name}`);
+        throw new Error(`Method ${method} is not implemented`);
       }
-      this[method] = this[method].bind(this);
+      (<Function>this[method]) = (<Function>this[method]).bind(this);
       this.$root.on(listener, this[method]);
     })
   }
@@ -30,11 +30,8 @@ abstract class DomListener {
     })
   }
 
-  private getMethodName(eventName: string): string {
-    if (typeof(eventName) !== 'string') {
-      return '';
-    }
-    return 'on' + eventName.charAt(0).toUpperCase() + eventName.slice(1);
+  private getMethodName(eventName: string): keyof DomListener {
+    return <keyof DomListener>('on' + eventName.charAt(0).toUpperCase() + eventName.slice(1));
   }
 }
 

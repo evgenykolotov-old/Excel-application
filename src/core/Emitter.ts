@@ -1,11 +1,14 @@
+import { Subscriber } from '../shared/Component';
+import { State } from '../shared/State';
+
 export interface EventListener {
-  [key: string]: Array<(...args: unknown[]) => unknown>;
+  [key: string]: Array<(...arg: Array<keyof State>) => void>;
 }
 
 class Emitter {
   private listeners: EventListener = {};
 
-  public emit(event: string, ...args: unknown[]): boolean {
+  public emit(event: string, ...args: Array<keyof State>): boolean {
     if (!Array.isArray(this.listeners[event])) {
       return false;
     }
@@ -15,11 +18,11 @@ class Emitter {
     return true;
   }
 
-  public subscribe(event: string, fn: () => unknown): () => void {
+  public subscribe(event: string, fn: Subscriber): () => void {
     this.listeners[event] = this.listeners[event] || [];
     this.listeners[event].push(fn);
     return () => {
-      this.listeners[event] = this.listeners[event].filter((listener: unknown) => listener !== fn);
+      this.listeners[event] = this.listeners[event].filter(listener => listener !== fn);
     }
   }
 }

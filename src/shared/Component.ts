@@ -5,7 +5,7 @@ import { State } from './State';
 export interface Component {
     init: () => void;
     toHTML: () => string;
-    storeChanged: (data: State) => void;
+    storeChanged: (data: keyof State) => void;
 }
 
 export interface ExcelOptions {
@@ -21,10 +21,10 @@ export interface ComponentOptions {
 export interface ExcelComponentOptions extends ComponentOptions {
     name: string;
     listeners: string[],
-    subscribe: string[],
+    subscribe: Array<keyof State>,
 }
 
-export type Subscriber = (data?: State) => void;
+export type Subscriber = (data?: keyof State) => void;
 
 export interface Unsubscriiber {
     unsubscribe: () => void;

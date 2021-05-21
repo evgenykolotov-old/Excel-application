@@ -4,12 +4,12 @@ import Store from './Store';
 import { Dom } from './Dom';
 import { ExcelComponentOptions } from '../shared/Component';
 import { Action } from '../store/actions';
-import { Styles } from '../shared/State';
+import { State, Styles } from '../shared/State';
 
 abstract class ExcelComponent extends DomListener {
   public name: string;
   public emitter: Emitter;
-  public subscribe: any[] = [];
+  public subscribe: Array<keyof State> = [];
   public store: Store;
   public unsubscribers: any[] = [];
 
@@ -35,7 +35,7 @@ abstract class ExcelComponent extends DomListener {
     this.store.dispatch(action);
   }
 
-  protected isWatching(key: unknown): unknown {
+  public isWatching(key: keyof State): boolean {
     return this.subscribe.includes(key);
   }
 

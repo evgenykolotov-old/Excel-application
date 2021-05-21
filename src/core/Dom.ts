@@ -5,7 +5,7 @@ export class Dom {
 
   constructor(selector: string | HTMLElement) {
     if (typeof(selector) === 'string') {
-      this.$elem = <HTMLElement>document.querySelector(selector);
+      this.$elem = <HTMLElement>document.createElement(selector);
     } else {
       this.$elem = selector;
     }
