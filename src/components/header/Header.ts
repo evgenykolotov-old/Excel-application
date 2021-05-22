@@ -1,13 +1,14 @@
-import ExcelComponent from '@core/ExcelComponent';
-import ActiveRoute from '@core/routes/ActiveRoute';
+import ExcelComponent from '../../core/ExcelComponent';
+import ActiveRoute from '../../core/routes/ActiveRoute';
 import { changeTitle } from '../../store/actions';
-import { defaultTitle } from '../../constants';
-import { $ } from '@core/dom';
+import { defaultTitle } from '../../store/initialState';
+import { $, Dom } from '../../core/Dom';
+import { Component, ComponentOptions } from '../../shared/Component';
 
-class Header extends ExcelComponent {
+class Header extends ExcelComponent implements Component {
   static className = 'excel__header';
 
-  constructor($root, options) {
+  constructor($root: Dom, options: ComponentOptions) {
     super($root, {
       name: 'Header',
       listeners: ['input', 'click'],
@@ -16,7 +17,11 @@ class Header extends ExcelComponent {
     });
   }
 
-  toHTML() {
+  public storeChanged(): void {
+    console.log('StoreChanged Header');
+  }
+
+  public toHTML(): string {
     const title = this.store.getState().title || defaultTitle;
     return `
       <input type="text" class="input" value="${title}" />
@@ -31,13 +36,13 @@ class Header extends ExcelComponent {
     `;
   }
 
-  onInput(event) {
-    const $target = $(event.target);
-    this.$dispatch(changeTitle($target.text()));
+  private onInput(event: Event): void {
+    const $target = $(<HTMLElement>event.target);
+    this.$dispatch(changeTitle(<string>$target.text()));
   }
 
-  onClick(event) {
-    const $target = $(event.target);
+  private onClick(event: Event): void {
+    const $target = $(<HTMLElement>event.target);
     if ($target.data.button === 'remove') {
       const decision = window.confirm('Вы действительно хотите удалить эту таблицу?');
       if (decision) {

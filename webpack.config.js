@@ -9,32 +9,17 @@ const isProd = process.env.NODE_ENV === 'production';
 const isDev = !isProd;
 
 const filename = ext => isDev ? `bundle.${ext}` : `bundle.[hash].${ext}`;
-const jsLoaders = () => {
-  const loaders = [
-    {
-      loader: 'babel-loader',
-      options: {
-        presets: ['@babel/preset-env'],
-        plugins: ['@babel/plugin-proposal-class-properties']
-      }
-    }
-  ]
-  if (isDev) {
-    loaders.push('eslint-loader')
-  }
-  return loaders
-}
 
 module.exports = {
   context: path.resolve(__dirname, 'src'),
   mode: 'development',
-  entry: ['@babel/polyfill', './index.js'],
+  entry: ['./index.ts'],
   output: {
     filename: filename('js'),
     path: path.resolve(__dirname, 'public')
   },
   resolve: {
-    extensions: ['.js'],
+    extensions: ['.js', '.ts', '.tsx'],
     alias: {
       '@': path.resolve(__dirname, 'src'),
       '@core': path.resolve(__dirname, 'src/core')
@@ -70,9 +55,9 @@ module.exports = {
         ],
       },
       {
-        test: /\.js$/,
+        test: /\.tsx?$/,
         exclude: /node_modules/,
-        use: jsLoaders()
+        use: 'ts-loader'
       }
     ]
   }
