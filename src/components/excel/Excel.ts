@@ -1,18 +1,26 @@
-import { $ } from '@core/dom';
-import Emitter from '@core/Emitter';
+import { $, Dom } from '../../core/Dom';
+import Emitter from '../../core/Emitter';
+import Store from '../../core/Store';
 import StoreSubscriber from '../../core/StoreSubscriber';
 import { preventDefault } from '../../core/utils';
+import { ExcelOptions } from '../../shared/Component';
 import { updateDate } from '../../store/actions';
 
 class Excel {
-  constructor(options) {
-    this.components = options.components || [];
+  // eslint-disable-next-line
+  private components: any[] = [];
+  private store: Store;
+  private emitter: Emitter;
+  private subscriber: StoreSubscriber;
+
+  constructor(options: ExcelOptions) {
+    this.components = options.components;
     this.store = options.store;
     this.emitter = new Emitter();
     this.subscriber = new StoreSubscriber(this.store);
   }
 
-  getRoot() {
+  public getRoot(): Dom {
     const $root = $.create('div', 'excel');
     const componentOptions = {
       emitter: this.emitter,
@@ -28,7 +36,7 @@ class Excel {
     return $root;
   }
 
-  init() {
+  public init(): void {
     if (process.env.NODE_ENV === 'production') {
       document.addEventListener('contextmenu', preventDefault);
     }
@@ -37,7 +45,7 @@ class Excel {
     this.components.forEach(component => component.init());
   }
 
-  destroy() {
+  public destroy(): void {
     document.removeEventListener('contextmenu', preventDefault);
     this.subscriber.unsubscribeFromStore();
     this.components.forEach(component => component.destroy());

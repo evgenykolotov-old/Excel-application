@@ -1,19 +1,25 @@
-class Emitter {
-  constructor() {
-    this.listeners = {};
-  }
+import { Subscriber } from '../shared/Component';
+import { Styles } from '../shared/State';
+import { Dom } from './Dom';
 
-  emit(event, ...args) {
+export interface EventListener {
+  [key: string]: Subscriber[];
+}
+
+class Emitter {
+  private listeners: EventListener = {};
+
+  public emit(event: string, data?: Dom | Styles | string): boolean {
     if (!Array.isArray(this.listeners[event])) {
       return false;
     }
     this.listeners[event].forEach(listener => {
-      listener(...args);
+      listener(data);
     });
     return true;
   }
 
-  subscribe(event, fn) {
+  public subscribe(event: string, fn: Subscriber): () => void {
     this.listeners[event] = this.listeners[event] || [];
     this.listeners[event].push(fn);
     return () => {

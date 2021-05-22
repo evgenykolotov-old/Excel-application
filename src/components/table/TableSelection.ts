@@ -1,35 +1,40 @@
+import { Dom } from "../../core/Dom";
+import { Styles } from "../../shared/State";
+
 class TableSelection {
   static className = 'selected';
+  private group: Dom[];
+  public current: Dom | null;
 
   constructor() {
     this.group = [];
     this.current = null;
   }
 
-  clear() {
+  public clear(): void {
     this.group.forEach($cell => $cell.removeClass(TableSelection.className));
     this.group = [];
   }
 
-  select($elem) {
+  public select($elem: Dom): void {
     this.clear();
     $elem.focus().addClass(TableSelection.className);
     this.group.push($elem);
     this.current = $elem;
   }
 
-  selectGroup($group = []) {
+  public selectGroup($group: Dom[] = []): void {
     this.clear();
     this.group = $group;
     this.group.forEach($elem => $elem.addClass(TableSelection.className));
   }
 
-  applyStyle(style) {
-    this.group.forEach($elem => $elem.css(style));
+  public applyStyle(style: Styles): void {
+    this.group.forEach($elem => $elem.css(<CSSStyleDeclaration>style));
   }
 
-  get selectedIds() {
-    return this.group.map($elem => $elem.id());
+  public get selectedIds(): string[] {
+    return this.group.map($elem => <string>$elem.id());
   }
 }
 

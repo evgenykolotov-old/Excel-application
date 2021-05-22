@@ -1,8 +1,14 @@
-import { $ } from '@core/dom';
+import { Routes } from '../../shared/Component';
+import { $, Dom } from '../Dom';
+import Page from '../Page';
 import ActiveRoute from './ActiveRoute';
 
 class Router {
-  constructor(selector, routes) {
+  private $placeholder: Dom;
+  private routes: Routes;
+  private page: Page | null;
+
+  constructor(selector: string, routes: Routes) {
     if (!selector) {
       throw new Error('Selector is not provided in Router!');
     }
@@ -13,24 +19,25 @@ class Router {
     this.init();
   }
 
-  init() {
+  public init(): void {
     window.addEventListener('hashchange', this.changePageHandler);
     this.changePageHandler();
   }
 
-  destroy() {
+  public destroy(): void {
     window.removeEventListener('hashchange', this.changePageHandler);
   }
 
-  changePageHandler() {
+  public changePageHandler(): void {
     if (this.page) {
       this.page.destroy();
     }
     this.$placeholder.clear();
-    const Page = ActiveRoute.path.includes('excel') ? this.routes.excel : this.routes.dashboard;
+    //eslint-disable-next-line
+    const Page: any = ActiveRoute.path.includes('excel') ? this.routes.excel : this.routes.dashboard;
     this.page = new Page(ActiveRoute.param);
-    this.$placeholder.append(this.page.getRoot());
-    this.page.afterRender();
+    this.$placeholder.append(<Dom>this.page?.getRoot());
+    this.page?.afterRender();
   }
 }
 
