@@ -2,9 +2,9 @@ import { defaultStyles } from '../../store/initialState';
 import { State, ColState, Styles, RowState } from '../../shared/State';
 
 class TableFactory {
-  private CODES = { A: 65, Z: 90 };
-  private DEFAULT_WIDTH = 120;
-  private DEFAULT_HEIGHT = 24;
+  static CODES = { A: 65, Z: 90 };
+  static DEFAULT_WIDTH = 120;
+  static DEFAULT_HEIGHT = 24;
   private rowsCount: number;
   private state: State;
 
@@ -14,7 +14,7 @@ class TableFactory {
   }
 
   public createTable(): string {
-    const colsCount = this.CODES.Z - this.CODES.A + 1;
+    const colsCount = TableFactory.CODES.Z - TableFactory.CODES.A + 1;
     const rows = [];
     const cols = new Array(colsCount)
         .fill('')
@@ -36,7 +36,7 @@ class TableFactory {
   } 
 
   private toChar(_: string, index: number): string {
-    return String.fromCharCode(this.CODES.A + index);
+    return String.fromCharCode(TableFactory.CODES.A + index);
   }
 
   private withWidthFrom(state: ColState): (col: string, index: number) => { col: string; index: number; width: string } {
@@ -48,7 +48,7 @@ class TableFactory {
   }
 
   private getWidth(state: ColState, index: number): string {
-    return (state[index] || this.DEFAULT_WIDTH) + 'px';
+    return (state[index] || TableFactory.DEFAULT_WIDTH) + 'px';
   }
 
   private toColumn({ col, index, width }: { col: string; index: number; width: string }): string {
@@ -76,7 +76,7 @@ class TableFactory {
   }
 
   private getHeight(state: RowState, index: number | null): string {
-    return (index && state[index] || this.DEFAULT_HEIGHT) + 'px';
+    return (index && state[index] || TableFactory.DEFAULT_HEIGHT) + 'px';
   }
 
   private toCell(state: State, row: number): (_: unknown, col: number) => string {
