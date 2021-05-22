@@ -7,6 +7,7 @@ import { ExcelOptions } from '../../shared/Component';
 import { updateDate } from '../../store/actions';
 
 class Excel {
+  // eslint-disable-next-line
   private components: any[] = [];
   private store: Store;
   private emitter: Emitter;

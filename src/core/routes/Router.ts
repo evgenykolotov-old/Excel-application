@@ -33,8 +33,8 @@ class Router {
       this.page.destroy();
     }
     this.$placeholder.clear();
-    const Page = ActiveRoute.path.includes('excel') ? this.routes.excel : this.routes.dashboard;
-    // eslint-disable-next-line
+    //eslint-disable-next-line
+    const Page: any = ActiveRoute.path.includes('excel') ? this.routes.excel : this.routes.dashboard;
     this.page = new Page(ActiveRoute.param);
     this.$placeholder.append(<Dom>this.page?.getRoot());
     this.page?.afterRender();

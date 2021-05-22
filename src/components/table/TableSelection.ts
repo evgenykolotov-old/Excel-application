@@ -30,7 +30,7 @@ class TableSelection {
   }
 
   public applyStyle(style: Styles): void {
-    this.group.forEach($elem => $elem.css(style));
+    this.group.forEach($elem => $elem.css(<CSSStyleDeclaration>style));
   }
 
   public get selectedIds(): string[] {

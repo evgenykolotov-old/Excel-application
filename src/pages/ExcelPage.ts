@@ -8,12 +8,12 @@ import Store from '../core/Store';
 import { rootReducer } from '../store/rootReducer';
 import { storage } from '../core/utils';
 import { normalizeInitialState } from '../store/initialState';
-import { debounce } from '../core/utils';
 import { Dom } from '../core/Dom';
 import { State } from '../shared/State';
+import { Component, Unsubscriiber } from '../shared/Component';
 
 class ExcelPage extends Page {
-  private storeSub: any;
+  private storeSub: Unsubscriiber | null;
   private excel: Excel | null = null;
 
   constructor(param: string) {
@@ -27,14 +27,14 @@ class ExcelPage extends Page {
     const state = storage(this.storageName(param));
     const store = new Store(rootReducer, normalizeInitialState(state));
 
-    const stateListener = debounce((state: State) => {
+    const stateListener = (state: State) => {
       storage(this.storageName(param), state);
-    }, 600);
+    };
 
     this.storeSub = store.subscribe(stateListener);
 
     this.excel = new Excel({
-      components: [Header, Toolbar, Formula, Table],
+      components: (<unknown>[Header, Toolbar, Formula, Table]) as Component[],
       store
     });
     return this.excel.getRoot();
@@ -46,7 +46,7 @@ class ExcelPage extends Page {
 
   public destroy(): void {
     this.excel?.destroy();
-    this.storeSub.unsubscribe();
+    this.storeSub && this.storeSub();
   }
 
   private storageName(param: string): string {

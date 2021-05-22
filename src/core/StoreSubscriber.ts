@@ -21,7 +21,7 @@ class StoreSubscriber {
           components.forEach((component: Component) => {
             if (component.isWatching(key)) {
               const changes = { [key]: state[key] } as unknown;
-              component.storeChanged(<keyof State>changes);
+              component.storeChanged(<State>changes);
             }
           })
         }

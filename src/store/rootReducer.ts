@@ -9,8 +9,9 @@ export const rootReducer: RootReducer = function(state, action) {
     case ActionTypes.TABLE_RESIZE: {
       const field = action.data.type === 'col' ? 'colState' : 'rowState';
       const value = state[field];
+      const id: string = action.data.id.toString();
       if (value) {
-        value[action.data.id] = action.data.value; 
+        value[id] = action.data.value; 
       }
       return { ...state, [field]: value };
     }

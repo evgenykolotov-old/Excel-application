@@ -86,12 +86,12 @@ export class Dom {
     return this;
   }
 
-  public id(parse?: boolean): string | undefined | { row: number; col: number } {
+  public id(parse?: boolean): { row: string; col: string } | string | undefined {
     if (parse) {
       const parsed = (<string>this.id()).split(':');
       return {
-        row: parseInt(parsed[0]),
-        col: parseInt(parsed[1]),
+        row: parsed[0],
+        col: parsed[1],
       }
     }
     return this.data.id;
